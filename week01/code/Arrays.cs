@@ -13,7 +13,13 @@ public static class Arrays
         // step by step before you write the code. The plan should be clear enough that it could
         // be implemented by another person.
 
-        return []; // replace this return statement with your own
+        double[] results = new double[length];
+
+        for (int i = 0; i < length; i++)
+        {
+            results[i] = number * (i + 1);
+        }
+        return results;
     }
 
     /// <summary>
@@ -25,9 +31,28 @@ public static class Arrays
     /// </summary>
     public static void RotateListRight(List<int> data, int amount)
     {
-        // TODO Problem 2 Start
-        // Remember: Using comments in your program, write down your process for solving this problem
-        // step by step before you write the code. The plan should be clear enough that it could
-        // be implemented by another person.
+        // PLAN (step-by-step):
+        // 1. Normalize amount in case it's equal to data.Count (a full rotation yields the same list).
+        //    Use k = amount % data.Count (through the spec guarantees 1..Count, this keeps it robust).
+        // 2. Compute the split index where the list will be cut: split = data.Count - k.
+        // 3. Take the "right" slice (the last k elements): data.GetRange(split, k).
+        // 4. Take the "left" slice (everything before split): data.GetRange(0, split).
+        // 5. Clear the original list and re-build it by adding right slice first, then left slice.
+        // 6. Done; the input list is now rotated in place.
+
+        if (data == null || data.Count == 0) return;
+
+        int k = amount % data.Count;
+        if (k == 0) return; // No rotation needed
+
+        int split = data.Count - k;
+
+        List<int> right = data.GetRange(split, k);
+        List<int> left = data.GetRange(0, split);
+
+        data.Clear();
+        data.AddRange(right);
+        data.AddRange(left);
     }
+
 }
